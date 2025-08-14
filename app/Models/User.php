@@ -46,4 +46,25 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get all of the word_statuses for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function wordStatuses()
+    {
+        return $this->hasMany(UserWordStatus::class);
+    }
+
+    /**
+     * Get all of the learnedWords for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function learnedWords()
+    {
+        return $this->belongsToMany(Word::class, 'user_word_statuses')
+                    ->withPivot(['familiarity_star', 'correct_count', 'wrong_count', 'last_practiced_at']);
+    }
 }
